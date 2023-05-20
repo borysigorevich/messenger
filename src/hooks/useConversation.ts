@@ -12,7 +12,7 @@ export const useConversation = () => {
 
     const isOpen = useMemo(() => {
         return !!conversationId
-    }, [])
+    }, [conversationId])
 
     return useMemo(() => ({
         conversationId,

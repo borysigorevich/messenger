@@ -25,7 +25,7 @@ export const DesktopItem: React.FC<DesktopItemProps> = (
                 className={clsx(
                     `
                     flex group gap-x-3 rounded-md p-3 text-sm leading-6 font-semibold hover:text-black 
-                    hover:bg-gray-100 transition
+                    hover:bg-gray-100 transition cursor-pointer
                     `,
                     active ? 'text-black bg-gray-100' : 'text-gray-500'
                 )}

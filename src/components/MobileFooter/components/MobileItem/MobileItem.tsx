@@ -24,7 +24,7 @@ const MobileItem: React.FC<MobileItemProps> = (
             href={href}
             className={clsx(`
                 group flex flex-1 gap-x-3 text-sm leading-6 font-semibold justify-center p-4 
-                hover:text-black hover:bg-gray-100 transition
+                hover:text-black hover:bg-gray-100 transition cursor-pointer
             `,
                 active ? 'text-black bg-gray-100' : 'text-gray-500'
             )}

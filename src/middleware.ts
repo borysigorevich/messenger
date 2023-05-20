@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
 
     if (isAuth && path === '/') {
         return NextResponse.redirect(new URL('/users', request.url));
-    } else if (path === '/users' && !isAuth) {
+    } else if ((path === '/users' || path.includes('/conversations')) && !isAuth) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 }
@@ -20,6 +20,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
     matcher: [
         '/',
-        '/users/:path*'
+        '/users/:path*',
+        '/conversations/:path*',
     ]
 }
