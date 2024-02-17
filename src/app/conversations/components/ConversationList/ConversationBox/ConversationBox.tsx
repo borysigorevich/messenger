@@ -20,7 +20,7 @@ export const ConversationBox: React.FC<ConversationBoxProps> = ({ data, selected
 
 	const lastMessage = useMemo(() => {
 		const messages = data.messages || [];
-		return messages[data.messages.length - 1];
+		return messages[data.messages?.length - 1];
 	}, [data]);
 
 	const hasSeen = useMemo(() => {

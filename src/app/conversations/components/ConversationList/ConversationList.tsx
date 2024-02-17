@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 import { MdOutlineGroupAdd } from 'react-icons/all';
+import { FullConversationType } from '../../../../../types';
 
 export const ConversationList: React.FC<ConversationListProps> = ({
 	initialItems,
@@ -38,21 +39,49 @@ export const ConversationList: React.FC<ConversationListProps> = ({
 		if (!pusherKey) return;
 		pusherClient.subscribe(pusherKey);
 
-		const newConversationHandler = (newConversation: any) => {
+		const newConversationHandler = (newConversation: FullConversationType) => {
 			setItems((state) => {
 				if (state.find((item) => item.id === newConversation.id)) return state;
 				return [newConversation, ...state];
 			});
 		};
 
+		const updateConversationHandler = (newConversation: FullConversationType) => {
+			setItems((state) => {
+				return state.map((conversation) => {
+					if (conversation.id === newConversation.id) {
+						return {
+							...conversation,
+							messages: newConversation.messages,
+						};
+					}
+					return conversation;
+				});
+			});
+		};
+
+		const removeConversationHandler = (conversation: FullConversationType) => {
+			setItems((state) => {
+				return state.filter((item) => item.id !== conversation.id);
+			});
+			if (conversationId === conversation.id) {
+				router.push('/conversations');
+			}
+		};
+
 		pusherClient.bind('conversation:new', newConversationHandler);
+		pusherClient.bind('conversation:update', updateConversationHandler);
+		pusherClient.bind('conversation:remove', removeConversationHandler);
 
 		return () => {
 			pusherClient.unsubscribe(pusherKey);
 			pusherClient.unbind('conversation:new');
+			pusherClient.unbind('conversation:update');
+			pusherClient.unbind('conversation:remove');
 		};
-	}, [pusherKey]);
+	}, [pusherKey, conversationId, router]);
 
+	console.log({ items });
 	return (
 		<>
 			<GroupChatModal

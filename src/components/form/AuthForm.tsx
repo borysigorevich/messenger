@@ -100,6 +100,7 @@ export const AuthForm = () => {
 						toast.error('Something went wrong');
 					} else if (callback?.ok) {
 						toast.success('Success');
+						router.push('/users');
 					}
 				});
 			}

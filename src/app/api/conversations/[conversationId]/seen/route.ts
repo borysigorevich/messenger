@@ -59,7 +59,7 @@ export async function POST(req: Request, { params }: { params: ParamsType }) {
 
 		await pusherServer.trigger(currentUser.email, 'conversation:update', {
 			id: conversationId,
-			message: [updatedMessage],
+			messages: [updatedMessage],
 		});
 
 		if (lastMessage.seenIds.indexOf(currentUser.id) !== -1) {

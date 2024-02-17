@@ -39,7 +39,6 @@ export const MessageBox: React.FC<MessageBoxProps> = ({ data, isLast }) => {
 		setImageModalOpen(false);
 	};
 
-	console.log({ data, seenList });
 	return (
 		<div className={container}>
 			<div className={avatar}>
