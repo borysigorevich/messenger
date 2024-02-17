@@ -1,4 +1,5 @@
 import { getCurrentUser } from '@/actions';
+import prisma from '@/libs/prismadb';
 import { pusherServer } from '@/libs/pusher';
 import { NextResponse } from 'next/server';
 
@@ -7,11 +8,7 @@ export async function POST(request: Request) {
 		const currentUser = await getCurrentUser();
 		const body = await request.json();
 
-		console.log({ body, currentUser }, 'body, currentUser');
-
 		const { userId, isGroup, members, name } = body;
-
-		console.log({ userId, isGroup, members, name }, 'userId, isGroup, members, name');
 
 		if (!currentUser?.id || !currentUser.email)
 			return new NextResponse('Unauthorized', { status: 401 });
@@ -19,10 +16,7 @@ export async function POST(request: Request) {
 		if (isGroup && (!members || members.length < 2 || !name))
 			return new NextResponse('Invalid data', { status: 400 });
 
-		console.log('before if isGroup');
-
 		if (isGroup) {
-			console.log('inside if isGroup');
 			const newConversation = await prisma?.conversation.create({
 				data: {
 					name,
@@ -54,8 +48,6 @@ export async function POST(request: Request) {
 			return NextResponse.json(newConversation);
 		}
 
-		console.log('before existingConversations');
-
 		const existingConversations = await prisma?.conversation.findMany({
 			where: {
 				OR: [
@@ -73,15 +65,9 @@ export async function POST(request: Request) {
 			},
 		});
 
-		console.log({ existingConversations }, 'existingConversations');
-
 		const singleConversation = existingConversations?.[0];
 
-		console.log({ singleConversation }, 'singleConversation');
-
 		if (singleConversation) return NextResponse.json(singleConversation);
-
-		console.log('before newConversation');
 
 		const newConversation = await prisma?.conversation.create({
 			data: {
@@ -94,8 +80,6 @@ export async function POST(request: Request) {
 			},
 		});
 
-		console.log({ newConversation }, 'newConversation');
-
 		newConversation?.users.forEach((user) => {
 			if (user.email) {
 				pusherServer.trigger(user.email, 'conversation:new', newConversation);
@@ -104,7 +88,6 @@ export async function POST(request: Request) {
 
 		return NextResponse.json(newConversation);
 	} catch (error: any) {
-		console.log({ error });
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
