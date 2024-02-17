@@ -9,7 +9,7 @@ import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useCallback } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import { BsGithub, BsGoogle } from 'react-icons/bs';
@@ -55,7 +55,7 @@ export const AuthForm = () => {
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm({
+	} = useForm<FieldValues>({
 		defaultValues: {
 			name: '',
 			email: '',
@@ -84,7 +84,7 @@ export const AuthForm = () => {
 			});
 	};
 
-	const onSubmit: SubmitHandler<FormSchema> = async (formData) => {
+	const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
 		setIsLoading(true);
 
 		try {
