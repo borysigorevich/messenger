@@ -15,7 +15,6 @@ export const Modal = ({ children, onClose, isOpen }: ModalProps) => {
 				as={'div'}
 				className='relative z-50'
 				onClose={(props) => {
-					console.log({ props }, 'here');
 					onClose();
 				}}
 			>

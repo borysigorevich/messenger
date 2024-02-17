@@ -47,8 +47,6 @@ export const ConversationBox: React.FC<ConversationBoxProps> = ({ data, selected
 		return 'Started a conversation';
 	}, [lastMessage]);
 
-	console.log({ data });
-
 	return (
 		<div onClick={handleClick}>
 			<div

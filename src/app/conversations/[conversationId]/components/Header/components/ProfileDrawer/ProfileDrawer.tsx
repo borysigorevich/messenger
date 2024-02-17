@@ -2,6 +2,7 @@ import { HeaderType } from '@/app/conversations/[conversationId]/components/Head
 import { Avatar } from '@/components/Avatar';
 import { AvatarGroup } from '@/components/AvatarGroup';
 import { ConfirmModal } from '@/components/ConfirmModal';
+import { useActiveList } from '@/hooks/useActiveList';
 import { useOtherUser } from '@/hooks/useOtherUser';
 import { Dialog, Transition } from '@headlessui/react';
 import { format } from 'date-fns';
@@ -12,12 +13,22 @@ export const ProfileDrawer: React.FC<HeaderType> = ({ isOpen, onClose, data }) =
 	const otherUser = useOtherUser(data);
 	const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
+	const members = useActiveList((state) => state.members);
+
+	const isActive = members.includes(otherUser?.email || '');
+
 	const joinedDate = useMemo(() => {
 		return format(new Date(otherUser?.createdAt || ''), 'PP');
 	}, [otherUser]);
 
 	const title = data.name || otherUser?.name;
-	const statusText = data.isGroup ? `${data.users.length} members` : 'Active';
+	const statusText = useMemo(() => {
+		if (data.isGroup) {
+			return `${data.users.length} members`;
+		}
+
+		return isActive ? 'Active' : 'Offline';
+	}, [data, isActive]);
 
 	const handleModalOpen = () => {
 		setIsConfirmModalOpen(true);

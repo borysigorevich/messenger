@@ -3,6 +3,7 @@ import { ProfileDrawer } from '@/app/conversations/[conversationId]/components/H
 import { HeaderProps } from '@/app/conversations/[conversationId]/components/Header/types';
 import { Avatar } from '@/components/Avatar';
 import { AvatarGroup } from '@/components/AvatarGroup';
+import { useActiveList } from '@/hooks/useActiveList';
 import { useOtherUser } from '@/hooks/useOtherUser';
 import { Conversation } from '@prisma/client';
 import Link from 'next/link';
@@ -11,16 +12,18 @@ import { HiChevronLeft, HiEllipsisHorizontal } from 'react-icons/all';
 
 export const Header: React.FC<HeaderProps> = ({ conversation }) => {
 	const [drawerOpen, setDrawerOpen] = useState(false);
-
 	const otherUser = useOtherUser(conversation);
+
+	const members = useActiveList((state) => state.members);
+	const isActive = members.includes(otherUser?.email || '');
 
 	const statusText = useMemo(() => {
 		if ((conversation as Conversation).isGroup) {
 			return `${conversation?.users?.length} members`;
 		}
 
-		return 'Active now';
-	}, [conversation]);
+		return isActive ? 'Active' : 'Offline';
+	}, [conversation, isActive]);
 
 	return (
 		<>

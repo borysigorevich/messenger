@@ -23,7 +23,6 @@ export const Body: React.FC<BodyProps> = ({ initialMessages }) => {
 		bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
 
 		const messageHandler = (message: FullMessageType) => {
-			console.log({ message }, 'new');
 			axios.post(`/api/conversations/${conversationId}/seen`);
 			setInitialMessageState((state) => {
 				if (find(state, { id: message.id })) return state;
@@ -32,7 +31,6 @@ export const Body: React.FC<BodyProps> = ({ initialMessages }) => {
 		};
 
 		const updateMessageHandler = (newMessage: FullMessageType) => {
-			console.log({ newMessage }, 'update');
 			setInitialMessageState((state) => {
 				return state.map((message) => {
 					if (message.id === newMessage.id) {

@@ -45,7 +45,6 @@ export const GroupChatModal = ({ isOpen, onClose, users }: GroupChatModalProps) 
 	const members = watch('members');
 
 	const onSubmit: SubmitHandler<FormValues> = async (data) => {
-		console.log({ data });
 		setIsLoading(true);
 		axios
 			.post('/api/conversations', {

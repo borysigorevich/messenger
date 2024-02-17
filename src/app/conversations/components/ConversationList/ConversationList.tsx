@@ -81,7 +81,6 @@ export const ConversationList: React.FC<ConversationListProps> = ({
 		};
 	}, [pusherKey, conversationId, router]);
 
-	console.log({ items });
 	return (
 		<>
 			<GroupChatModal

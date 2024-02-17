@@ -1,5 +1,9 @@
+'use client';
+import { useActiveChannel } from '@/hooks/useActiveChannel';
 import React from 'react';
 
 export const ActiveStatus = () => {
-	return <div></div>;
+	useActiveChannel();
+
+	return null;
 };

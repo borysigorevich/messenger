@@ -6,7 +6,6 @@ import React from 'react';
 const ConversationsLayout = async ({ children }: { children: React.ReactNode }) => {
 	const conversations = await getConversations();
 	const users = await getUsers();
-	console.log({ conversations, users }, 'here');
 	return (
 		<div className='h-full'>
 			<Sidebar>

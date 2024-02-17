@@ -1,3 +1,4 @@
+import { ActiveStatus } from '@/components/ActiveStatus';
 import AuthContext from '@/context/AuthContext';
 import ToasterContext from '@/context/ToasterContext';
 import { Inter } from 'next/font/google';
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<AuthContext>
 					<div className='h-full'>{children}</div>
 					<ToasterContext />
+					<ActiveStatus />
 				</AuthContext>
 			</body>
 		</html>
