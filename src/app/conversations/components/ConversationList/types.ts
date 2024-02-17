@@ -1,5 +1,7 @@
-import {FullConversationType} from "../../../../../types";
+import { FullConversationType } from '../../../../../types';
+import { User } from '@prisma/client';
 
 export type ConversationListProps = {
-    initialItems: FullConversationType[]
-}
+	initialItems: FullConversationType[];
+	users: User[];
+};

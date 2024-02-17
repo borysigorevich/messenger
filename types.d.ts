@@ -1,11 +1,11 @@
-import {Conversation, User, Message} from '@prisma/client'
+import { Conversation, User, Message } from '@prisma/client';
 
 type FullMessageType = Message & {
-    sender: User
-    seen: User[]
-}
+	sender: User;
+	seen: User[];
+};
 
 type FullConversationType = Conversation & {
-    users: User[]
-    messages: FullMessageType[]
-}
+	users: User[];
+	messages: FullMessageType[];
+};

@@ -1,21 +1,15 @@
-'use client'
-import {EmptyState} from "@/components/EmptyState";
-import {useConversation} from "@/hooks/useConversation";
-import clsx from "clsx";
+'use client';
+import { EmptyState } from '@/components/EmptyState';
+import { useConversation } from '@/hooks/useConversation';
+import clsx from 'clsx';
 import React from 'react';
 
 export const Conversation = () => {
+	const { isOpen } = useConversation();
 
-    const {isOpen} = useConversation()
-
-    return (
-        <div
-            className={clsx(
-                'lg:pl-80 h-full lg:block',
-                isOpen ? 'hidden' : 'block'
-            )}
-        >
-            <EmptyState/>
-        </div>
-    );
+	return (
+		<div className={clsx('h-full lg:block lg:pl-80', isOpen ? 'hidden' : 'block')}>
+			<EmptyState />
+		</div>
+	);
 };

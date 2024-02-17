@@ -1,1 +1,1 @@
-export * from './DesktopItem'
+export * from './DesktopItem';

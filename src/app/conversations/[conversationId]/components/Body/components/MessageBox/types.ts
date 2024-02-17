@@ -1,6 +1,6 @@
-import {FullMessageType} from "../../../../../../../../types";
+import { FullMessageType } from '../../../../../../../../types';
 
 export type MessageBoxProps = {
-    isLast: boolean
-    data: FullMessageType
-}
+	isLast: boolean;
+	data: FullMessageType;
+};

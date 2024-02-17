@@ -1,1 +1,1 @@
-export * from './MobileFooter'
+export * from './MobileFooter';

@@ -1,5 +1,5 @@
-import {User} from '@prisma/client'
+import { User } from '@prisma/client';
 
 export type DesktopSidebarProps = {
-    currentUser: User | null
-}
+	currentUser: User | null;
+};

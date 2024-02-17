@@ -1,1 +1,1 @@
-export * from './ConversationBox'
+export * from './ConversationBox';

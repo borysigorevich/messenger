@@ -1,50 +1,95 @@
-'use client'
-import {ConversationBox} from "@/app/conversations/components/ConversationList/ConversationBox";
-import {ConversationListProps} from "@/app/conversations/components/ConversationList/types";
-import {useConversation} from "@/hooks/useConversation";
-import clsx from "clsx";
-import {useRouter} from "next/navigation";
-import React from 'react';
-import {MdOutlineGroupAdd} from "react-icons/all";
+'use client';
+import { GroupChatModal } from '@/app/conversations/components/ConversationList/components/GroupChatModal';
+import { ConversationBox } from '@/app/conversations/components/ConversationList/ConversationBox';
+import { ConversationListProps } from '@/app/conversations/components/ConversationList/types';
+import { useConversation } from '@/hooks/useConversation';
+import { pusherClient } from '@/libs/pusher';
+import clsx from 'clsx';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useMemo, useState } from 'react';
+import { MdOutlineGroupAdd } from 'react-icons/all';
 
-export const ConversationList: React.FC<ConversationListProps> = (
-    {
-        initialItems
-    }
-) => {
+export const ConversationList: React.FC<ConversationListProps> = ({
+	initialItems,
+	users,
+}) => {
+	const session = useSession();
 
-    const [items, setItems] = React.useState(initialItems)
+	const [items, setItems] = React.useState(initialItems);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const router = useRouter()
+	const router = useRouter();
 
-    const {conversationId, isOpen} = useConversation()
+	const { conversationId, isOpen } = useConversation();
 
-    return (
-        <aside
-            className={clsx(
-                `fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto border-r border-gray-200`,
-                isOpen ? 'hidden' : 'block w-full left-0'
-            )}
-        >
-            <div className='px-5'>
-                <div className='flex justify-between mb-4 pt-4'>
-                    <div className='text-2xl font-bold text-neutral-800'>Messages</div>
-                    <div
-                        className='rounded-full p-2 bg-gray-100 text-gray-600 cursor-pointer hover:opacity-75 transition'>
-                        <MdOutlineGroupAdd size={20}/>
-                    </div>
-                </div>
+	const handleModalOpen = () => {
+		setIsModalOpen(true);
+	};
+	const handleModalClose = () => {
+		setIsModalOpen(false);
+	};
 
-                <div className='space-y-2'>
-                    {items.map(item => (
-                        <ConversationBox
-                            key={item.id}
-                            data={item}
-                            selected={conversationId === item.id}
-                        />
-                    ))}
-                </div>
-            </div>
-        </aside>
-    );
+	const pusherKey = useMemo(() => {
+		return session.data?.user?.email;
+	}, [session.data?.user?.email]);
+
+	useEffect(() => {
+		if (!pusherKey) return;
+		pusherClient.subscribe(pusherKey);
+
+		const newConversationHandler = (newConversation: any) => {
+			setItems((state) => {
+				if (state.find((item) => item.id === newConversation.id)) return state;
+				return [newConversation, ...state];
+			});
+		};
+
+		pusherClient.bind('conversation:new', newConversationHandler);
+
+		return () => {
+			pusherClient.unsubscribe(pusherKey);
+			pusherClient.unbind('conversation:new');
+		};
+	}, [pusherKey]);
+
+	return (
+		<>
+			<GroupChatModal
+				users={users}
+				isOpen={isModalOpen}
+				onClose={handleModalClose}
+			/>
+			<aside
+				className={clsx(
+					`fixed inset-y-0 overflow-y-auto border-r border-gray-200 pb-20 lg:left-20 lg:block lg:w-80 lg:pb-0`,
+					isOpen ? 'hidden' : 'left-0 block w-full'
+				)}
+			>
+				<div className='px-5'>
+					<div className='mb-4 flex justify-between pt-4'>
+						<div className='text-2xl font-bold text-neutral-800'>
+							Messages
+						</div>
+						<div
+							className='cursor-pointer rounded-full bg-gray-100 p-2 text-gray-600 transition hover:opacity-75'
+							onClick={handleModalOpen}
+						>
+							<MdOutlineGroupAdd size={20} />
+						</div>
+					</div>
+
+					<div className='space-y-2'>
+						{items.map((item) => (
+							<ConversationBox
+								key={item.id}
+								data={item}
+								selected={conversationId === item.id}
+							/>
+						))}
+					</div>
+				</div>
+			</aside>
+		</>
+	);
 };

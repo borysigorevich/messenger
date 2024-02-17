@@ -1,12 +1,12 @@
-import {EmptyState} from "@/components/EmptyState";
+import { EmptyState } from '@/components/EmptyState';
 import React from 'react';
 
 const Users = () => {
-    return (
-        <div className='hidden lg:block pl-80 h-full'>
-            <EmptyState/>
-        </div>
-    );
+	return (
+		<div className='hidden h-full pl-80 lg:block'>
+			<EmptyState />
+		</div>
+	);
 };
 
-export default Users
+export default Users;

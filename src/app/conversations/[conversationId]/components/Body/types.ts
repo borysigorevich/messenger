@@ -1,5 +1,5 @@
-import {FullMessageType} from "../../../../../../types";
+import { FullMessageType } from '../../../../../../types';
 
 export type BodyProps = {
-    initialMessages: FullMessageType[]
-}
+	initialMessages: FullMessageType[];
+};

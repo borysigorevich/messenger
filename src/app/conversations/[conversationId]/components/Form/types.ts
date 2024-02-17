@@ -1,3 +1,3 @@
 export type FormSchema = {
-    message: string
-}
+	message: string;
+};

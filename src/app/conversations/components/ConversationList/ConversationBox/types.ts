@@ -1,6 +1,6 @@
-import {FullConversationType} from "../../../../../../types";
+import { FullConversationType } from '../../../../../../types';
 
 export type ConversationBoxProps = {
-    data: FullConversationType
-    selected: boolean
-}
+	data: FullConversationType;
+	selected: boolean;
+};

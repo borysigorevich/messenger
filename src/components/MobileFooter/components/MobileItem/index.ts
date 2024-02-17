@@ -1,1 +1,1 @@
-export * from './MobileItem'
+export * from './MobileItem';

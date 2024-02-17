@@ -1,11 +1,7 @@
-import {Conversation} from "@/app/conversations/components/Conversation";
-
+import { Conversation } from '@/app/conversations/components/Conversation';
 
 const Home = () => {
-
-    return (
-        <Conversation/>
-    );
+	return <Conversation />;
 };
 
 export default Home;
