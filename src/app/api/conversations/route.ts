@@ -11,13 +11,18 @@ export async function POST(request: Request) {
 
 		const { userId, isGroup, members, name } = body;
 
+		console.log({ userId, isGroup, members, name }, 'userId, isGroup, members, name');
+
 		if (!currentUser?.id || !currentUser.email)
 			return new NextResponse('Unauthorized', { status: 401 });
 
 		if (isGroup && (!members || members.length < 2 || !name))
 			return new NextResponse('Invalid data', { status: 400 });
 
+		console.log('before if isGroup');
+
 		if (isGroup) {
+			console.log('inside if isGroup');
 			const newConversation = await prisma?.conversation.create({
 				data: {
 					name,
@@ -48,6 +53,8 @@ export async function POST(request: Request) {
 
 			return NextResponse.json(newConversation);
 		}
+
+		console.log('before existingConversations');
 
 		const existingConversations = await prisma?.conversation.findMany({
 			where: {
