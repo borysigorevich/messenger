@@ -7,6 +7,8 @@ export async function middleware(request: NextRequest) {
 	const path = request.nextUrl.pathname;
 	const isAuth = !!session?.user?.email;
 
+	console.log({ path, isAuth, session }, 'Middleware');
+
 	if (isAuth && path === '/') {
 		return NextResponse.redirect(new URL('/users', request.url));
 	} else if ((path === '/users' || path.includes('/conversations')) && !isAuth) {
