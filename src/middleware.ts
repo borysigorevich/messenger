@@ -1,8 +1,11 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-	const isAuth = /next-auth.session-token/gi.test(request.cookies.toString());
+	const session = await getServerSession(authOptions);
 	const path = request.nextUrl.pathname;
+	const isAuth = !!session?.user?.email;
 
 	if (isAuth && path === '/') {
 		return NextResponse.redirect(new URL('/users', request.url));
