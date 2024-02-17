@@ -5,6 +5,7 @@ import { LoadingModal } from '@/components/LoadingModal';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import toast from 'react-hot-toast';
 
 export const UserBox: React.FC<UserBoxProps> = ({ user }) => {
 	const router = useRouter();
@@ -18,6 +19,10 @@ export const UserBox: React.FC<UserBoxProps> = ({ user }) => {
 			})
 			.then(({ data }) => {
 				router.push(`/conversations/${data.id}`);
+			})
+			.catch((error) => {
+				toast.error('Failed to create conversation');
+				console.log({ error }, 'error UserBox /api/conversations POST');
 			})
 			.finally(() => {
 				setLoading(false);
@@ -33,7 +38,6 @@ export const UserBox: React.FC<UserBoxProps> = ({ user }) => {
          transition duration-300 hover:bg-neutral-100'
 			>
 				<Avatar currentUser={user} />
-
 				<div className='min-w-0 flex-1'>
 					<div className='focus:outline-none'>
 						<div className='mb-1 flex items-center justify-between'>

@@ -7,6 +7,8 @@ export async function POST(request: Request) {
 		const currentUser = await getCurrentUser();
 		const body = await request.json();
 
+		console.log({ body, currentUser }, 'body, currentUser');
+
 		const { userId, isGroup, members, name } = body;
 
 		if (!currentUser?.id || !currentUser.email)
@@ -63,6 +65,8 @@ export async function POST(request: Request) {
 				],
 			},
 		});
+
+		console.log({ existingConversations }, 'existingConversations');
 
 		const singleConversation = existingConversations?.[0];
 
