@@ -207,12 +207,12 @@ export const AuthForm = () => {
 						<div className='mt-6 flex gap-2'>
 							<AuthSocialButton
 								Icon={BsGithub}
-								onClick={() => signIn('github')}
+								onClick={() => socialAction(SOCIAL_ACTION.GITHUB)}
 							/>
 
 							<AuthSocialButton
 								Icon={BsGoogle}
-								onClick={() => signIn('google')}
+								onClick={() => socialAction(SOCIAL_ACTION.GOOGLE)}
 							/>
 						</div>
 					</div>
