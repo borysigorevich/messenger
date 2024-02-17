@@ -77,7 +77,11 @@ export async function POST(request: Request) {
 
 		const singleConversation = existingConversations?.[0];
 
+		console.log({ singleConversation }, 'singleConversation');
+
 		if (singleConversation) return NextResponse.json(singleConversation);
+
+		console.log('before newConversation');
 
 		const newConversation = await prisma?.conversation.create({
 			data: {
@@ -90,6 +94,8 @@ export async function POST(request: Request) {
 			},
 		});
 
+		console.log({ newConversation }, 'newConversation');
+
 		newConversation?.users.forEach((user) => {
 			if (user.email) {
 				pusherServer.trigger(user.email, 'conversation:new', newConversation);
@@ -98,6 +104,7 @@ export async function POST(request: Request) {
 
 		return NextResponse.json(newConversation);
 	} catch (error: any) {
+		console.log({ error });
 		return new NextResponse('Internal error', { status: 500 });
 	}
 }
