@@ -18,7 +18,7 @@ export const ProfileDrawer: React.FC<HeaderType> = ({ isOpen, onClose, data }) =
 	const isActive = members.includes(otherUser?.email || '');
 
 	const joinedDate = useMemo(() => {
-		return format(new Date(otherUser?.createdAt || ''), 'PP');
+		return format(new Date(otherUser?.createdAt || Date.now()), 'PP');
 	}, [otherUser]);
 
 	const title = data.name || otherUser?.name;

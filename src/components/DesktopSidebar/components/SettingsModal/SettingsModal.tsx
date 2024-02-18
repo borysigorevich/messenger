@@ -87,7 +87,7 @@ export const SettingsModal = ({ currentUser, onClose, isOpen }: SettingsModalPro
 									<Image
 										width={48}
 										height={48}
-										className='rounded-full'
+										className='h-10 w-10 rounded-full'
 										src={
 											image ||
 											currentUser?.image ||
