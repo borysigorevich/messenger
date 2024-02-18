@@ -30,8 +30,9 @@ export const useRoutes = () => {
 				href: '#',
 				icon: HiArrowLeftOnRectangle,
 				onClick: () => {
-					router.push('/');
-					signOut();
+					signOut().then(() => {
+						router.push('/');
+					});
 				},
 			},
 		],
